@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #c7dce6, #caedf1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: linear-gradient(135deg, #c7dce6, #caedf1);
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 400px;
+            max-width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            color: green;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .go-back {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .go-back a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .go-back a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="messages">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>  </div>
+    {% endif %}
+
+        <h1>Add a New Product</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="name">Product Name</label>
+                {{ fo.name }}
+            </div>
+
+            <div class="form-group">
+                <label for="description">Product Description</label>
+                {{ fo.description }}
+            </div>
+
+            <div class="form-group">
+                <label for="price">Product Price</label>
+                {{ fo.price }}
+            </div>
+
+            <div class="form-group">
+                <label for="image">Product Image</label>
+                {{ fo.image }}
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                {{ fo.quantity }}
+            </div>
+            
+
+            <button type="submit">Submit</button>
+        </form>
+
+        {% if messages %}
+            <div class="message">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Go Back link -->
+        <div class="go-back">
+            <a href="{% url 'seller_dashboard' %}">Go Back</a>
+        </div>
+    </div>
+</body>
+
+</html>

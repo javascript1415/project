@@ -1,0 +1,387 @@
+{% extends "account/base.html" %}
+{% block title %}Order Management{% endblock title %}
+{% block content %}
+<style>
+    :root {
+        --primary-color: #0f172a;
+        --primary-hover: #1e293b;
+        --success-color: #15803d;
+        --danger-color: #b91c1c;
+        --border-color: #e2e8f0;
+        --bg-subtle: #f8fafc;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    body {
+        background: linear-gradient(135deg, #c7dce6, #caedf1);
+        color: var(--text-primary);
+    }
+
+    .orders-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+        min-height: 100vh;
+        font-family: Inter, system-ui, -apple-system, sans-serif;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 2.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--border-color);
+        letter-spacing: -0.025em;
+    }
+
+    .order-card {
+        background: linear-gradient(135deg, #c4eeee, #92f4ff);
+        border-radius: 4rem;
+        box-shadow: var(--shadow-md);
+        padding: 2rem;
+        margin-bottom: 2.5rem;
+        border: 1px solid var(--border-color);
+        transition: all 0.2s ease;
+    }
+
+    .order-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .order-id {
+        font-size: 1.25rem;
+        color: var(--text-primary);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        letter-spacing: -0.025em;
+    }
+
+    .order-id::before {
+        content: '';
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        background: var(--primary-color);
+        border-radius: 50%;
+    }
+
+    .total-amount {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        padding: 0.75rem 1.5rem;
+        background: #f1f5f9;
+        border-radius: 0.75rem;
+        letter-spacing: -0.025em;
+    }
+
+    .order-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+    }
+
+    .info-section {
+        background: var(--bg-subtle);
+        padding: 1.75rem;
+        border-radius: 0.75rem;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .info-section h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+        letter-spacing: -0.025em;
+    }
+
+    .info-section p {
+        margin: 1rem 0;
+        color: var(--text-secondary);
+        font-size: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        line-height: 1.5;
+    }
+
+    .info-section strong {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    .status-section {
+        margin: 2rem 0;
+        padding: 1.75rem;
+        background: linear-gradient(135deg, #c7dce6, #caedf1);
+        border-radius: 0.75rem;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .status-form {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        
+    }
+
+    .status-form select {
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        background: white;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+        min-width: 220px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 1.25rem;
+        padding-right: 2.5rem;
+    }
+
+    .status-form select:hover {
+        border-color: var(--primary-color);
+    }
+
+    .status-form select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+    }
+
+    .status-form button {
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #add4e5, #05e0f8);
+        color: white;
+        border: none;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.95rem;
+        letter-spacing: 0.025em;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .status-form button:hover {
+        background: var(--primary-hover);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .status-badge {
+        padding: 0.625rem 1.25rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: 0.025em;
+    }
+
+    .status-badge::before {
+        content: '';
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+
+    .status-cancelled {
+        background: #fef2f2;
+        color: var(--danger-color);
+    }
+
+    .status-cancelled::before {
+        background: var(--danger-color);
+    }
+
+    .status-delivered {
+        background: #f0fdf4;
+        color: var(--success-color);
+    }
+
+    .status-delivered::before {
+        background: var(--success-color);
+    }
+
+    .address-section {
+        margin-top: 2rem;
+        padding: 1.75rem;
+        background: var(--bg-subtle);
+        border-radius: 0.75rem;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .address-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.25rem;
+    }
+
+    .items-section {
+        margin-top: 2rem;
+        padding: 1.75rem;
+        background: var(--bg-subtle);
+        border-radius: 0.75rem;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .items-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.25rem;
+    }
+
+    @media (max-width: 768px) {
+        .orders-container {
+            padding: 1rem;
+        }
+
+        .order-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .status-form {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .order-info {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        body {
+            background-color: #0f172a;
+        }
+
+        .order-card {
+            background: #1e293b;
+        }
+
+        :root {
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+            --bg-subtle: #1e293b;
+        }
+
+        .status-form select {
+            background-color: #1e293b;
+        }
+
+        .total-amount {
+            background: #334155;
+        }
+
+        .status-cancelled {
+            background: #450a0a;
+        }
+
+        .status-delivered {
+            background: #14532d;
+        }
+    }
+</style>
+
+<div class="orders-container">
+    <h1 class="page-title">Order Management</h1>
+    
+    {% for order in orders %}
+    <div class="order-card">
+        <div class="order-header">
+            <h2 class="order-id">Order </h2>
+            <div class="total-amount">${{ order.total_amount }}</div>
+        </div>
+
+        <div class="order-info">
+            <div class="info-section">
+                <h3>Order Details</h3>
+                <p><strong>Customer:</strong> {{ order.user }}</p>
+                <p><strong>Order date:</strong> {{ order.ordered_at }}</p>
+            </div>
+
+            <div class="status-section">
+                <h3>Order Status</h3>
+                {% if order.status == 'Cancelled' %}
+                    <span class="status-badge status-cancelled">Order Cancelled</span>
+                {% elif order.status == 'Delivered' %}
+                    <span class="status-badge status-delivered">Successfully Delivered</span>
+                {% else %}
+                    <form class="status-form" action="{% url 'status_update' order.id %}" method="POST">
+                        {% csrf_token %}
+                        <select name="status">
+                            <option value="Pending" {% if order.status == "Pending" %}selected{% endif %}>Pending</option>
+                            <option value="Shipped" {% if order.status == "Shipped" %}selected{% endif %}>Shipped</option>
+                            <option value="Delivered" {% if order.status == "Delivered" %}selected{% endif %}>Delivered</option>
+                            <option value="Cancelled" {% if order.status == "Cancelled" %}selected{% endif %}>Cancelled</option>
+                        </select>
+                        <button type="submit">Update Status</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="items-section">
+            <h3>Order Items</h3>
+            <div class="items-list">
+                {{ order.items }}
+            </div> 
+            <h3>Order quantity</h3>
+            <div class="items-list">
+                {{ order.quantity }}
+            </div>
+        </div>
+
+        <div class="address-section">
+            <h3>Delivery Address</h3>
+            {% if order.buyer_address %}
+                <div class="address-grid">
+                    <p><strong>City:</strong> {{ order.buyer_address.city }}</p>
+                    <p><strong>Phone:</strong> {{ order.buyer_address.phone }}</p>
+                    <p><strong>Municipality:</strong> {{ order.buyer_address.muncipality }}</p>
+                    <p><strong>Tol:</strong> {{ order.buyer_address.tol }}</p>
+                    {% if order.buyer_address.landmark %}
+                        <p><strong>Landmark:</strong> {{ order.buyer_address.landmark }}</p>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p>No address found for this buyer.</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}

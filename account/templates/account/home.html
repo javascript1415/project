@@ -1,0 +1,333 @@
+{% extends "account/base.html" %}
+{% block title %}Home{% endblock title %}
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+        /* Modern Color System */
+        --primary-color: #2563eb;
+        --secondary-color: #3b82f6;
+        --accent-color: #f59e0b;
+        --success-color: #10b981;
+        --error-color: #ef4444;
+        --warning-color: #f97316;
+        --text-primary: #111827;
+        --text-secondary: #4b5563;
+        --background-light: #f8fafc;
+        --background-white: #b4dbee;
+        --border-color: #e2e8f0;
+        
+        /* Enhanced Spacing */
+        --spacing-xs: 0.5rem;
+        --spacing-sm: 0.75rem;
+        --spacing-md: 1rem;
+        --spacing-lg: 1.5rem;
+        --spacing-xl: 2rem;
+        --spacing-2xl: 3rem;
+    }
+    
+    .page-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: var(--spacing-xl);
+    }
+    
+    /* Enhanced Welcome Section */
+    .welcome-container {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border-radius: 20px;
+        padding: var(--spacing-2xl);
+        margin-bottom: var(--spacing-2xl);
+        text-align: center;
+        color: white;
+        box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.5);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .welcome-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        opacity: 0.1;
+    }
+    
+    .welcome-container h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: var(--spacing-md);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .welcome-container h3 {
+        font-size: 1.5rem;
+        font-weight: 500;
+        opacity: 0.9;
+    }
+    
+    .welcome-container strong {
+        color: var(--accent-color);
+        font-weight: 700;
+    }
+    
+    /* Enhanced Message System */
+    .message-container {
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .message {
+        padding: var(--spacing-lg);
+        border-radius: 12px;
+        margin-bottom: var(--spacing-md);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes slideIn {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    
+    .message i {
+        font-size: 1.5rem;
+    }
+    
+    .message.success {
+        background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+        color: #166534;
+    }
+    
+    .message.error {
+        background: linear-gradient(135deg, #fee2e2, #fecaca);
+        color: #991b1b;
+    }
+    
+    .message.warning {
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        color: #92400e;
+    }
+    
+    /* Enhanced Products Grid */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: var(--spacing-xl);
+        margin-top: var(--spacing-2xl);
+    }
+    
+    /* Enhanced Product Card */
+    .product-card {
+        background: var(--background-white);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .product-card:hover {
+        transform: translateY(-8px) scale(1.01);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .product-content {
+        padding: var(--spacing-lg);
+    }
+    
+    .product-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-bottom: 1px solid var(--border-color);
+        transition: transform 0.3s ease;
+    }
+    
+    .product-card:hover .product-image {
+        transform: scale(1.05);
+    }
+    
+    .product-label {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+    }
+    
+    .product-value {
+        color: var(--text-primary);
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    /* Enhanced Button */
+    .button {
+        width: 100%;
+        padding: var(--spacing-md) var(--spacing-lg);
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-sm);
+        text-decoration: none;
+        margin-top: var(--spacing-lg);
+    }
+    
+    .button:hover {
+        background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+    
+    .button i {
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+    }
+    
+    .button:hover i {
+        transform: translateX(4px);
+    }
+    .pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+}
+
+.pagination a:hover {
+    background: #3b82f6;
+}
+
+.pagination span {
+    padding: 10px;
+    font-weight: bold;
+}
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .page-container {
+            padding: var(--spacing-lg);
+        }
+        
+        .welcome-container {
+            padding: var(--spacing-xl);
+        }
+        
+        .welcome-container h1 {
+            font-size: 2rem;
+        }
+        
+        .welcome-container h3 {
+            font-size: 1.25rem;
+        }
+        
+        .products-grid {
+            grid-template-columns: 1fr;
+            gap: var(--spacing-lg);
+        }
+    }
+    </style>
+    
+    <div class="page-container">
+        {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                <i class="fas {% if message.tags == 'success' %}fa-check-circle{% elif message.tags == 'error' %}fa-exclamation-circle{% else %}fa-exclamation-triangle{% endif %}"></i>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% if user.is_authenticated %}
+        <div class="welcome-container">
+            <h1>Welcome back, {{ user.username }}!</h1>
+            {% if user.is_seller %}
+            <h3>Ready to <strong>grow your business</strong> today?</h3>
+            {% else %}
+            <h3>Discover <strong>amazing deals</strong> just for you</h3>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        {% if products %}
+        <div class="products-grid">
+            {% for product in products %}
+            <div class="product-card">
+                {% if product.image %}
+                <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% endif %}
+                <div class="product-content">
+                    <a href="{% url 'product_view' product.id %}">
+                    <div class="product-value">{{ product.name }}</div>
+                    <span class="product-label">PRICE</span>
+                    <div class="product-value">Rs {{ product.price }}</div>
+                    </a>
+                    {% if product.quantity < 1 %}
+                      
+                    <b>Out of stock</b>
+                    
+                    {% else %}
+
+                    {% if user.is_seller %}
+                    <a href="{% url 'home' %}"  class="button"> Login as customer to order items </a>
+                    {% else %}
+                    <a href="{% url 'add_to_cart' product.id %}" class="button">
+                        <i class="fas fa-shopping-cart"></i>
+                        Add to Cart
+                    </a>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+            <!-- Pagination Section -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if products.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ products.previous_page_number }}">previous</a>
+            {% endif %}
+            
+            <span class="current">
+                Page {{ products.number }} of {{ products.paginator.num_pages }}.
+            </span>
+            
+            {% if products.has_next %}
+                <a href="?page={{ products.next_page_number }}">next</a>
+                <a href="?page={{ products.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+        {% endif %}
+    </div>
+    {% endblock content %}

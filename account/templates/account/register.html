@@ -1,0 +1,202 @@
+{% extends "account/base.html" %}
+{% block title %}Register{% endblock title %}
+{% block content %}
+    <style>
+        .page-container {
+            min-height: calc(100vh - 64px); /* Adjust based on your navbar height */
+            padding: 2rem 1rem;
+            background-color:  #caedf1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .signup-container {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+        }
+
+        .signup-title {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 2rem;
+            font-size: 1.875rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background-color: #f8fafc;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4299e1;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+        }
+
+        .role-select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            background-color: #f8fafc;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .role-select:focus {
+            outline: none;
+            border-color: #4299e1;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 0.5rem;
+        }
+
+        .signup-btn:hover {
+            background-color: #3182ce;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #4a5568;
+            font-size: 0.925rem;
+        }
+
+        .login-link a {
+            color: #4299e1;
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+
+        .login-link a:hover {
+            color: #3182ce;
+            text-decoration: underline;
+        }
+
+        .errorlist {
+            list-style: none;
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            padding-left: 0;
+        }
+
+        @media (max-width: 640px) {
+            .signup-container {
+                padding: 1.5rem;
+            }
+
+            .signup-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+
+    <div class="page-container">
+        <div class="signup-container">
+            <h2 class="signup-title">Create Account</h2>
+            <form method="POST" novalidate>
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" value="{{form.name.value|default:''}}" name="name" placeholder="Enter your full name" required>
+                    {% if form.name.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.name.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" value="{{form.email.value|default:''}}" name="email" placeholder="Enter your email" required>
+                    {% if form.email.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.email.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                    {% if form.password.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.password.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+                    {% if form.confirm_password.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.confirm_password.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="role">Select Role</label>
+                    <select name="role" id="role" class="role-select">
+                        <option value="customer">Customer</option>
+                        <option value="seller">Seller</option>
+                    </select>
+                </div>
+                <button type="submit" class="signup-btn">Create Account</button>
+                <div class="login-link">
+                    Already have an account?<a href="{% url 'login' %}">Sign in</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

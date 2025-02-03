@@ -1,0 +1,256 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% endblock title %}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #c7dce6, #caedf1);
+    }
+
+    /* Enhanced Navbar Styles */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg,  #caedf1,#a5daf3);
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-left, .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .navbar a {
+      color: #333;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .navbar a:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+      color: #000;
+    }
+
+    .user-greeting {
+      font-weight: 600;
+      color: #333;
+      margin-right: 1rem;
+    }
+
+    /* Search Form Styles */
+    .search-form {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-left: 1.5rem;
+    }
+
+    .search-form input {
+      padding: 0.6rem 1rem;
+      border: 2px solid transparent;
+      border-radius: 6px;
+      background-color: rgba(255, 255, 255, 0.9);
+      transition: all 0.3s ease;
+      width: 200px;
+      font-size: 0.95rem;
+    }
+
+    .search-form input:focus {
+      outline: none;
+      border-color: #333;
+      background-color: white;
+      box-shadow: 0 0 0 3px rgba(241, 238, 12, 0.3);
+    }
+
+    .search-form input::placeholder {
+      color: #666;
+    }
+
+    /* Button Styles */
+    .navbar button {
+      padding: 0.6rem 1.2rem;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .navbar button:hover {
+      background-color: #000;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .content {
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Cart Animation Styles */
+    .carts-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .cart {
+      position: absolute;
+      font-size: 40px;
+      animation: float linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translate(0, 100vh) rotate(0deg);
+      }
+      100% {
+        transform: translate(0, -100vh) rotate(360deg);
+      }
+    }
+
+    /* Cart Animation Variations */
+    .cart:nth-child(1) { font-size: 80px; left: 5%; animation-duration: 15s; animation-delay: 0s; }
+    .cart:nth-child(2) { font-size: 60px; left: 15%; animation-duration: 12s; animation-delay: 1s; }
+    .cart:nth-child(3) { font-size: 90px; left: 25%; animation-duration: 14s; animation-delay: 2s; }
+    .cart:nth-child(4) { font-size: 70px; left: 35%; animation-duration: 13s; animation-delay: 0.5s; }
+    .cart:nth-child(5) { font-size: 85px; left: 45%; animation-duration: 16s; animation-delay: 1.5s; }
+    .cart:nth-child(6) { font-size: 75px; left: 55%; animation-duration: 11s; animation-delay: 3s; }
+    .cart:nth-child(7) { font-size: 95px; left: 65%; animation-duration: 17s; animation-delay: 2.5s; }
+    .cart:nth-child(8) { font-size: 65px; left: 75%; animation-duration: 14s; animation-delay: 1s; }
+    .cart:nth-child(9) { font-size: 88px; left: 85%; animation-duration: 13s; animation-delay: 2s; }
+    .cart:nth-child(10) { font-size: 72px; left: 95%; animation-duration: 15s; animation-delay: 0.5s; }
+    .cart:nth-child(11) { font-size: 82px; left: 8%; animation-duration: 16s; animation-delay: 3.5s; }
+    .cart:nth-child(12) { font-size: 78px; left: 18%; animation-duration: 12s; animation-delay: 4s; }
+    .cart:nth-child(13) { font-size: 92px; left: 28%; animation-duration: 14s; animation-delay: 2.8s; }
+    .cart:nth-child(14) { font-size: 68px; left: 38%; animation-duration: 15s; animation-delay: 1.8s; }
+    .cart:nth-child(15) { font-size: 86px; left: 48%; animation-duration: 13s; animation-delay: 3.2s; }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .nav-left, .nav-right {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .search-form {
+        margin: 0.5rem 0;
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .search-form input {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="carts-container">
+    <div class="cart">🛒</div>
+    <div class="cart">🛒</div>
+    <div class="cart">🛒</div>
+    <div class="cart">🛒</div>
+    <div class="cart">🛒</div>
+    <div class="cart">🛒</div>
+    <div class="cart">🛒</div>
+    <div class="cart">🛒</div>
+    <div class="cart">🛒</div>
+    <div class="cart">🛒</div>
+    <div class="cart">🛒</div>
+    <div class="cart">🛒</div>
+    <div class="cart">🛒</div>
+    <div class="cart">🛒</div>
+    <div class="cart">🛒</div>
+  </div>
+
+  <nav class="navbar">
+    <div class="nav-left">
+
+
+      <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
+      {% if user.is_authenticated %}
+        
+        {% if user.is_seller %}
+          <a href="{% url 'seller_dashboard' %}" class="{% if request.resolver_match.url_name == 'seller_dashboard' %}active{% endif %}">Dashboard</a>
+          <a href="{% url 'sellorder' %}" class="{% if request.resolver_match.url_name == 'sellorder' %}active{% endif %}">Orders</a>
+        {% elif user.is_customer%}
+          <a href="{% url 'customer_dashboard' %}" class="{% if request.resolver_match.url_name == 'customer_dashboard' %}active{% endif %}">Dashboard</a>
+          <a href="{% url 'cart_detail' %}" class="{% if request.resolver_match.url_name == 'cart_detail' %}active{% endif %}">Cart</a>
+          <a href="{% url 'order' %}" class="{% if request.resolver_match.url_name == 'order' %}active{% endif %}">Orders</a>
+        {% endif %}
+      {% endif %}
+      
+      <form action="{% url 'search' %}" method="GET" class="search-form">
+        <input type="text" name="q" placeholder="Search..." required>
+        <button type="submit">Search</button>
+      </form>
+    </div>
+    
+    <div class="nav-right">
+      {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="POST">
+          {% csrf_token %}
+          <button type="submit">Logout</button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <div class="content">
+    <br>
+    {% block content %}
+    {% endblock content %}
+  </div>
+
+  <script>
+    // Add random horizontal movement to carts
+    document.querySelectorAll('.cart').forEach(cart => {
+      let randomX = Math.random() * 150 - 75;
+      cart.style.transform = `translateX(${randomX}px)`;
+      
+      cart.addEventListener('animationiteration', () => {
+        randomX = Math.random() * 150 - 75;
+        cart.style.transform = `translateX(${randomX}px)`;
+      });
+    });
+  </script>
+</body>
+</html>

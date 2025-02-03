@@ -1,0 +1,84 @@
+<style>
+    *{
+        background: linear-gradient(135deg, #7ad0f8, #caedf1);
+    }
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #7ad0f8, #caedf1);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+strong {
+    color: #d9534f; /* Red color for emphasis */
+}
+
+.warning-text {
+    font-size: 14px;
+    color: #d9534f;
+    margin-bottom: 20px;
+}
+
+.delete-form {
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    font-size: 16px;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 4px;
+
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ad8787, #970707);
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #970707, #ad8787);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #5bf174, #108cbd);
+    color: white;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #108cbd, #5bf174);
+}
+
+.go-back {
+    margin-top: 20px;
+}
+</style>
+
+<div class="container">
+    <h1>Are you sure you want to delete the item: <strong>{{ product.name }}</strong>?</h1>
+
+    <p class="warning-text">This action cannot be undone.</p>
+
+    <form method="POST" class="delete-form">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    </form>
+
+    <div class="go-back">
+        <a href="{% url 'seller_dashboard' %}" class="btn btn-secondary">Go Back</a>
+    </div>
+</div>

@@ -1,0 +1,422 @@
+{% extends "account/base.html" %}
+
+{% block title %}Your Store{% endblock title %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+:root {
+    --primary-color: #0066CC;
+    --secondary-color: #F5F5F7;
+    --success-color: #34C759;
+    --danger-color: #FF3B30;
+    --text-primary: #1D1D1F;
+    --text-secondary: #86868B;
+    --border-color: #D2D2D7;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--secondary-color);
+    color: var(--text-primary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Header Styles */
+.store-header {
+    background: white;
+    box-shadow: var(--shadow-sm);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.store-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.add-product-btn {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.add-product-btn:hover {
+    background-color: #0052CC;
+}
+
+.seller-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.seller-name {
+    color: var(--text-secondary);
+}
+
+.menu-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.875rem;
+}
+
+.menu-link:hover {
+    text-decoration: underline;
+}
+
+/* Messages Styles */
+.messages-container {
+    max-width: 1200px;
+    margin: 1rem auto;
+    padding: 0 1.5rem;
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.alert-success {
+    background-color: #D4EDDA;
+    color: #155724;
+}
+
+.alert-error {
+    background-color: #F8D7DA;
+    color: #721C24;
+}
+
+/* Products Grid */
+.products-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.product-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+}
+
+.product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.product-image {
+    aspect-ratio: 4/3;
+    position: relative;
+    background: var(--secondary-color);
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.no-image {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+}
+
+.product-details {
+    padding: 1rem;
+}
+
+.product-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    color: var(--text-primary);
+}
+
+.product-price {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.shipping-info {
+    color: var(--success-color);
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.product-description {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.btn {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    width: 100%;
+    font-size: 0.875rem;
+    display: inline-block;
+    box-sizing: border-box;
+    line-height: 1.5;
+}
+
+.edit-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #0052CC;
+}
+
+.delete-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #D70015;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.empty-state h2 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+/* Orders Section */
+.orders-section {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.orders-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.order-card {
+    background: linear-gradient(135deg, #ffffff, #98eaf3);   
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-sm);
+    border-radius: 32px;
+}
+
+.quantity {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .header-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+ 
+}
+</style>
+
+<div class="store-container">
+    <header class="store-header">
+        <div class="header-container">
+            <h1 class="store-title">{{user.name}} Store</h1>
+            <div class="header-actions">
+                <a href="{% url 'add_product' %}" class="add-product-btn">
+                    <i class="fas fa-plus"></i>
+                    Add New Product
+                </a>
+                <div class="seller-info">
+                    <span class="seller-name">Hello, {{user.name}}</span>
+                    <a href="{% url 'password_change' %}" class="menu-link">Change Password</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {% if messages %}
+    <div class="messages-container">
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}}">
+            <i class="fas fa-info-circle"></i>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main class="products-container">
+        {% if products %}
+        <div class="products-grid">
+            {% for product in products %}
+            <div class="product-card">
+                <div class="product-image">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                    <div class="no-image">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="product-details">
+                    <h2 class="product-title">{{ product.name }}</h2>
+                    <div class="product-price">${{ product.price }}</div>
+                    <p class="shipping-info">Free Delivery</p>
+                    <p class="quantity">Stock: {{product.quantity}}</p>
+                    <div class="product-actions">
+                        <a href="{% url 'edit_product' product.id %}" class="btn edit-btn">Edit</a>
+                        <form action="{% url 'delete_product' product.id %}" method="get" style="margin: 0; width: 100%;">
+                            <button type="submit" class="btn delete-btn">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-store"></i>
+            <h2>Your store is empty</h2>
+            <p>Add your first product to start selling</p>
+            <a href="{% url 'add_product' %}" class="btn edit-btn">Add Product</a>
+        </div>
+        {% endif %}
+    </main>
+
+    {% if orders %}
+    <section class="orders-section">
+        <h2 class="orders-title">Delivered Orders</h2>
+        {% for order in orders %}
+            {% if order.status == "Delivered" %}
+            <div class="order-card">
+                <p>Customer: {{order.user}}</p>
+                <p>Product: {{order.items.name}}</p>
+                <p>Order ID: {{order.id}}</p>
+                <p>Seller: {{order.seller}}</p>
+                <p>Ordered: {{order.ordered_at}}</p>
+                <p>Updated: {{order.updated_at}}</p>
+                <p>Total Amount: ${{order.total_amount}}</p>
+            </div>
+            {% endif %}
+        {% endfor %}
+        <div class="haha" style="background: linear-gradient(135deg, #eef0f1, #98eaf3);
+        height: 100px; width: 200px; /* Set a more proportional width */
+        border-radius: 15px; /* Slightly rounded corners */
+        display: flex; /* Flexbox to center content */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        text-align: center;
+        padding: 15px; /* Add padding for better spacing */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+        font-family: Arial, sans-serif; /* Use a modern font */
+        font-size: 16px; /* Increase text size for visibility */
+        color: #333; /* Dark text color for contrast */
+        border: 1px solid #ccc;"> <!-- Subtle border to match the background -->
+   
+    <h1 style="margin: 0; font-size: 18px; font-weight: bold;">
+        <p class="total-sales" style="margin: 0;">Total Sales: {{total}}</p>
+    </h1> 
+</div>
+
+
+
+ </section>
+    {% endif %}
+</div>
+{% endblock content %}

@@ -1,0 +1,197 @@
+{% extends "account/base.html" %}
+{% block title %}Shipping Address{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="form-header">
+        <h1>Shipping Address</h1>
+    </div>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="form-wrapper">
+        <form method="POST" class="address-form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_phone">Phone Number:</label>
+                {{ form.phone }}
+                {% if form.phone.errors %}
+                    <div class="error-message">{{ form.phone.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_city">City:</label>
+                {{ form.city }}
+                {% if form.city.errors %}
+                    <div class="error-message">{{ form.city.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_muncipality">Municipality:</label>
+                {{ form.muncipality }}
+                {% if form.muncipality.errors %}
+                    <div class="error-message">{{ form.muncipality.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_tol">Tol:</label>
+                {{ form.tol }}
+                {% if form.tol.errors %}
+                    <div class="error-message">{{ form.tol.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_landmark">Landmark:</label>
+                {{ form.landmark }}
+                {% if form.landmark.errors %}
+                    <div class="error-message">{{ form.landmark.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save Address</button>
+                <a href="{% url 'home' %}" class="btn btn-outline">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .form-header {
+        margin-bottom: 2rem;
+    }
+
+    .form-header h1 {
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+
+    .messages {
+        margin-bottom: 1rem;
+    }
+
+    .alert {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 4px;
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+    }
+
+    .form-wrapper {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .address-form {
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        color: #444;
+    }
+
+    .form-group input {
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        width: 100%;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+
+    .error-message {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: #007bff;
+        color: white;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background: #0056b3;
+    }
+
+    .btn-outline {
+        border: 1px solid #6c757d;
+        color: #6c757d;
+        background: white;
+    }
+
+    .btn-outline:hover {
+        background: #6c757d;
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 1rem;
+        }
+
+        .form-wrapper {
+            padding: 1rem;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+{% endblock content %}

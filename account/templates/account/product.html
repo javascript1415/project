@@ -1,0 +1,201 @@
+{% extends "account/base.html" %}
+{% block title %}
+    {{product.name}}
+{% endblock title %}
+{% block content %}
+<style>
+    .product-container {
+        max-width: 1200px;
+        margin: 3rem auto;
+        padding: 0 1.5rem;
+    }
+
+    .product-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        background-color: #c8eff8;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+    }
+
+    .product-image-section {
+        padding: 2rem;
+        background: linear-gradient(to bottom right, #f7fafc, #aad2fa);
+    }
+
+    .product-image {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .product-image:hover {
+        transform: scale(1.02);
+    }
+
+    .product-details {
+        padding: 2.5rem;
+    }
+
+    .product-name {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+    }
+
+    .product-price {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #2b6cb0;
+        margin-bottom: 2rem;
+    }
+
+    .product-price::before {
+        content: '$';
+        font-size: 1.5rem;
+        vertical-align: top;
+        margin-right: 0.25rem;
+    }
+
+    .product-description {
+        font-size: 1.125rem;
+        line-height: 1.7;
+        color: #4a5568;
+        margin-bottom: 2.5rem;
+    }
+
+    .no-image {
+        text-align: center;
+        padding: 4rem;
+        background-color: #f7fafc;
+        border-radius: 12px;
+        color: #a0aec0;
+        font-style: italic;
+        font-size: 1.125rem;
+    }
+
+    .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem 2rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #ffffff;
+        background-color: #4299e1;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+                    0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    .button:hover {
+        background-color: #3182ce;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .button i {
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .product-container {
+            margin: 2rem auto;
+        }
+
+        .product-image {
+            height: 400px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .product-content {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .product-image-section {
+            padding: 1.5rem;
+        }
+
+        .product-details {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 2rem;
+        }
+
+        .product-price {
+            font-size: 1.75rem;
+        }
+
+        .product-description {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .product-container {
+            margin: 1rem auto;
+            padding: 0 1rem;
+        }
+
+        .product-image {
+            height: 300px;
+        }
+
+        .button {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="product-container">
+    <div class="product-content">
+        <div class="product-image-section">
+            {% if product.image %}
+                <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+                <div class="no-image">
+                    <p>No image available</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="product-details">
+            <h1 class="product-name">{{ product.name }}</h1>
+            <div class="product-price">{{ product.price }}</div>
+            <div class="product-description">{{ product.description }}</div>
+            {% if product.quantity < 1 %}
+                      
+            <b>Out of stock</b>
+            
+            {% else %}   
+            {% if user.is_seller %}
+            <a href="{% url 'home' %}"  class="button"> Login as customer to order items </a>
+            {% else %}
+            <a href="{% url 'add_to_cart' product.id %}" class="button">
+                <i class="fas fa-shopping-cart"></i>
+                Add to Cart
+            </a>
+            {% endif %}
+            {% endif %}
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

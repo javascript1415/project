@@ -1,0 +1,235 @@
+{% extends "account/base.html" %}
+
+{% block title %}Orders{% endblock title %}
+
+{% block content %}
+<style>
+:root {
+    --primary-color: #0066CC;
+    --secondary-color: #F5F5F7;
+    --border-color: #E5E5E5;
+    --text-primary: #1D1D1F;
+    --text-secondary: #86868B;
+    --success-color: #34C759;
+    --warning-color: #FF9500;
+    --danger-color: #FF3B30;
+    --background-color: #F5F5F7;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.orders-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+}
+
+.order-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+    border: 1px solid var(--border-color);
+}
+
+.order-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.order-id {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.order-status {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status-delivered {
+    background-color: #E8F5E9;
+    color: var(--success-color);
+}
+
+.status-pending {
+    background-color: #FFF3E0;
+    color: var(--warning-color);
+}
+
+.status-cancelled {
+    background-color: #FFEBEE;
+    color: var(--danger-color);
+}
+
+.order-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.info-group {
+    margin-bottom: 1rem;
+}
+
+.info-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.info-value {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.address-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.address-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.empty-state-text {
+    font-size: 1.125rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 640px) {
+    .order-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+</style>
+
+<div class="orders-container">
+    <h1 class="page-title">My Orders</h1>
+    
+    {% if selected_items %}
+        {% for order in selected_items %}
+        <div class="order-card">
+            <div class="order-header">
+                <span class="order-status {% if order.status == 'Delivered' %}status-delivered{% elif order.status == 'Cancelled' %}status-cancelled{% else %}status-pending{% endif %}">
+                    {{ order.status }}
+                    {% if order.status == 'Cancelled' %}
+                        - Cancelled by seller
+                    {% endif %}
+                </span>
+            </div>
+            
+            <div class="order-info">
+                
+                <div class="info-group">
+                    <div class="info-label">Seller</div>
+                    <div class="info-value">{{ order.seller }}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Total Amount</div>
+                    <div class="info-value">${{ order.total_amount }}</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Items</div>
+                    <div class="info-value">{{ order.items }}</div>
+                </div>
+            </div>
+
+            {% if ad %}
+            <div class="address-section">
+                <h3 class="address-title">Delivery Address</h3>
+                <div class="order-info">
+                    <div class="info-group">
+                        <div class="info-label">City</div>
+                        <div class="info-value">{{ ad.city }}</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Phone</div>
+                        <div class="info-value">{{ ad.phone }}</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Municipality</div>
+                        <div class="info-value">{{ ad.muncipality }}</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Tol</div>
+                        <div class="info-value">{{ ad.tol }}</div>
+                    </div>
+                    {% if ad.landmark %}
+                    <div class="info-group">
+                        <div class="info-label">Landmark</div>
+                        <div class="info-value">{{ ad.landmark }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <div class="address-section">
+                <div class="info-value">No address found.</div>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-state-icon">📦</div>
+        <h2 class="empty-state-text">You don't have any orders yet</h2>
+        <p class="empty-state-description">Start shopping to see your orders here</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}
