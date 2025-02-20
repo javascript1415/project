@@ -11,7 +11,7 @@
       margin: 0;
       padding: 0;
       min-height: 100vh;
-      background: linear-gradient(135deg, #c7dce6, #caedf1);
+      background: linear-gradient(135deg, #c7dce6, #eaf1f1);
     }
 
     /* Enhanced Navbar Styles */
@@ -86,19 +86,21 @@
     /* Button Styles */
     .navbar button {
       padding: 0.6rem 1.2rem;
-      background-color: #333;
-      color: white;
+      background-color: #a5daf3;
+      color: #333;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.3s ease;
-      font-weight: 500;
+      font-weight: bolder;
+      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     }
 
     .navbar button:hover {
       background-color: #000;
       transform: translateY(-2px);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      color: aliceblue;
     }
 
     .content {
@@ -135,23 +137,6 @@
       }
     }
 
-    /* Cart Animation Variations */
-    .cart:nth-child(1) { font-size: 80px; left: 5%; animation-duration: 15s; animation-delay: 0s; }
-    .cart:nth-child(2) { font-size: 60px; left: 15%; animation-duration: 12s; animation-delay: 1s; }
-    .cart:nth-child(3) { font-size: 90px; left: 25%; animation-duration: 14s; animation-delay: 2s; }
-    .cart:nth-child(4) { font-size: 70px; left: 35%; animation-duration: 13s; animation-delay: 0.5s; }
-    .cart:nth-child(5) { font-size: 85px; left: 45%; animation-duration: 16s; animation-delay: 1.5s; }
-    .cart:nth-child(6) { font-size: 75px; left: 55%; animation-duration: 11s; animation-delay: 3s; }
-    .cart:nth-child(7) { font-size: 95px; left: 65%; animation-duration: 17s; animation-delay: 2.5s; }
-    .cart:nth-child(8) { font-size: 65px; left: 75%; animation-duration: 14s; animation-delay: 1s; }
-    .cart:nth-child(9) { font-size: 88px; left: 85%; animation-duration: 13s; animation-delay: 2s; }
-    .cart:nth-child(10) { font-size: 72px; left: 95%; animation-duration: 15s; animation-delay: 0.5s; }
-    .cart:nth-child(11) { font-size: 82px; left: 8%; animation-duration: 16s; animation-delay: 3.5s; }
-    .cart:nth-child(12) { font-size: 78px; left: 18%; animation-duration: 12s; animation-delay: 4s; }
-    .cart:nth-child(13) { font-size: 92px; left: 28%; animation-duration: 14s; animation-delay: 2.8s; }
-    .cart:nth-child(14) { font-size: 68px; left: 38%; animation-duration: 15s; animation-delay: 1.8s; }
-    .cart:nth-child(15) { font-size: 86px; left: 48%; animation-duration: 13s; animation-delay: 3.2s; }
-
     /* Responsive Design */
     @media (max-width: 768px) {
       .navbar {
@@ -180,23 +165,6 @@
   </style>
 </head>
 <body>
-  <div class="carts-container">
-    <div class="cart">🛒</div>
-    <div class="cart">🛒</div>
-    <div class="cart">🛒</div>
-    <div class="cart">🛒</div>
-    <div class="cart">🛒</div>
-    <div class="cart">🛒</div>
-    <div class="cart">🛒</div>
-    <div class="cart">🛒</div>
-    <div class="cart">🛒</div>
-    <div class="cart">🛒</div>
-    <div class="cart">🛒</div>
-    <div class="cart">🛒</div>
-    <div class="cart">🛒</div>
-    <div class="cart">🛒</div>
-    <div class="cart">🛒</div>
-  </div>
 
   <nav class="navbar">
     <div class="nav-left">
@@ -240,17 +208,5 @@
     {% endblock content %}
   </div>
 
-  <script>
-    // Add random horizontal movement to carts
-    document.querySelectorAll('.cart').forEach(cart => {
-      let randomX = Math.random() * 150 - 75;
-      cart.style.transform = `translateX(${randomX}px)`;
-      
-      cart.addEventListener('animationiteration', () => {
-        randomX = Math.random() * 150 - 75;
-        cart.style.transform = `translateX(${randomX}px)`;
-      });
-    });
-  </script>
 </body>
 </html>

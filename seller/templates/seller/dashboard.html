@@ -356,7 +356,7 @@ body {
                 </div>
                 <div class="product-details">
                     <h2 class="product-title">{{ product.name }}</h2>
-                    <div class="product-price">${{ product.price }}</div>
+                    <div class="product-price">Rs {{ product.price }}</div>
                     <p class="shipping-info">Free Delivery</p>
                     <p class="quantity">Stock: {{product.quantity}}</p>
                     <div class="product-actions">
@@ -391,7 +391,7 @@ body {
                 <p>Seller: {{order.seller}}</p>
                 <p>Ordered: {{order.ordered_at}}</p>
                 <p>Updated: {{order.updated_at}}</p>
-                <p>Total Amount: ${{order.total_amount}}</p>
+                <p>Total Amount: Rs {{order.total_amount}}</p>
             </div>
             {% endif %}
         {% endfor %}
